@@ -19,6 +19,7 @@ if you still have a question, please post it on the Project 3 discussion board
 come to office hours
 Project Description & Dataset
 ![image](https://user-images.githubusercontent.com/73619173/136471468-c20c9053-5142-4cb7-97a6-6f8857cc5672.png)
+
 Image taken from the Fashion-MNIST dataset webpage (Links to an external site.) 
 
 Primary Goal:
