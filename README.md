@@ -18,8 +18,7 @@ read postings and replies on the Project 3 discussion board (someone may have as
 if you still have a question, please post it on the Project 3 discussion board
 come to office hours
 Project Description & Dataset
-fashion-mnist-sprite.png
-
+![image](https://user-images.githubusercontent.com/73619173/136471468-c20c9053-5142-4cb7-97a6-6f8857cc5672.png)
 Image taken from the Fashion-MNIST dataset webpage (Links to an external site.) 
 
 Primary Goal:
@@ -107,14 +106,13 @@ The labels.npy  Download labels.npycontains the 6500 corresponding labels for th
 
 Image data is provided as 28-by-28 matrices of integer pixel values. However, the input to the network will be a flat vector of length 28*28 = 784. You will have to flatten each matrix to be a vector, as illustrated by the toy example below:
 
-flatten_image_matrix_to_vector.png
-
+![image](https://user-images.githubusercontent.com/73619173/136471585-5b2b97d8-3704-4090-a3f9-2780e3726528.png)
 
 The label for each image is provided as an integer in the range of 0 to 9. However, the output of the network should be structured as a “one-hot vector” of length 10 encoded as follows:
 
  
 
-one-hot-vector-encoding.png
+![image](https://user-images.githubusercontent.com/73619173/136471646-9375fbbc-00a9-420e-9cfd-d299ad292975.png)
 
 To preprocess data, use NumPy (Links to an external site.)  functions like reshape (Links to an external site.) for changing matrices into vectors. You can also use Keras’s to_categorical (Links to an external site.) function for converting label numbers into one-hot encodings.
 
@@ -133,8 +131,7 @@ take the remaining 25% and put into the Test Set
 
 3) Building a Model
 
-model-template.png
-
+![image](https://user-images.githubusercontent.com/73619173/136471673-80e8cd69-2f31-443c-a5c8-f8a076d51500.png)
  
 
 In Keras, Models are instantiations of the class Sequential. A Keras model template  Download templatewritten with the Sequential Model API (Links to an external site.) is provided which must be used as a starting point for building your model. The template includes a sample first input layer and output layer. You must limit yourself to “Dense” layers - Keras’ version of traditional fully-connected neural network layers. This portion of the project will involve experimentation. 
@@ -150,7 +147,7 @@ Leave the final layer as it appears in the template with a softmax activation un
 
 4) Compiling a Model
 
-compile-model-code.png
+![image](https://user-images.githubusercontent.com/73619173/136471687-7bf65e2c-a057-4993-b6f6-09a429c5f690.png)
 
 Prior to training a model, you must specify what your loss function for the model is and what your gradient descent method is. Please use the standard categorical cross-entropy and stochastic gradient descent (‘sgd’) when compiling your model (as provided in the template).
 
@@ -158,7 +155,7 @@ Prior to training a model, you must specify what your loss function for the mode
 
 5) Training a Model
 
-train-model-code.png
+![image](https://user-images.githubusercontent.com/73619173/136471708-d02ff533-473a-4a21-aa4f-ca6b730ee54f.png)
 
 You have the option of changing how many epochs to train your model for and how large your mini-batch size is. Experiment to see what works best. Also remember to include your validation data in the fit() method.
 
@@ -166,15 +163,15 @@ You have the option of changing how many epochs to train your model for and how 
 
 6) Reporting Your Results
 
-print-history-code.png
+![image](https://user-images.githubusercontent.com/73619173/136471729-9bed2e78-331c-44c6-aa8d-d6200bc38d87.png)
 
 fit() returns data about your training experiment. In the template this is stored in the “history” variable. Use this information to construct your graph that shows how validation and training accuracy change after every epoch of training.
 
-model-predict-code.png
+![image](https://user-images.githubusercontent.com/73619173/136471750-56ffb18c-821c-4eb5-9e60-cf21fb4fdee8.png)
 
 Use the predict() (Links to an external site.) method on model to evaluate what labels your model predicts on test set. Use these and the true labels to construct your confusion matrix, like the toy example below, although you do not need to create a fancy visualization. Your matrix should have 10 rows and 10 columns.
 
-confusion-matrix-example.png
+![image](https://user-images.githubusercontent.com/73619173/136471762-9da2177f-0ecc-40b7-ad4b-848fba5fdd0b.png)
 
 Grading Rubric
 See detailed descriptions of what each of these parts should contain in Section 2, Project Requirements, above.
