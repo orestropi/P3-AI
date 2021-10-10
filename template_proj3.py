@@ -15,6 +15,8 @@ import numpy as np
 #print(our_array)
 
 #preprocessing
+from tensorflow._api.v2 import math
+
 images = np.load("images.npy")
 print(images.shape)
 #images.resize((1,784))
@@ -22,6 +24,7 @@ print(images)
 labels = np.load("labels.npy")
 print(labels.shape)
 array_labels = tf.keras.utils.to_categorical(labels, num_classes=None)
+print(labels)
 
 #stratified sampling
 filtered0 = []
@@ -35,145 +38,166 @@ filtered7 = []
 filtered8 = []
 filtered9 = []
 
-for label in labels:
-    if label == 0:
-        filtered0.append(True)
-        filtered1.append(False)
-        filtered2.append(False)
-        filtered3.append(False)
-        filtered4.append(False)
-        filtered5.append(False)
-        filtered6.append(False)
-        filtered7.append(False)
-        filtered8.append(False)
-        filtered9.append(False)
-    elif label == 1:
-        filtered0.append(False)
-        filtered1.append(True)
-        filtered2.append(False)
-        filtered3.append(False)
-        filtered4.append(False)
-        filtered5.append(False)
-        filtered6.append(False)
-        filtered7.append(False)
-        filtered8.append(False)
-        filtered9.append(False)
-    elif label == 2:
-        filtered0.append(False)
-        filtered1.append(False)
-        filtered2.append(True)
-        filtered3.append(False)
-        filtered4.append(False)
-        filtered5.append(False)
-        filtered6.append(False)
-        filtered7.append(False)
-        filtered8.append(False)
-        filtered9.append(False)
-    elif label == 3:
-        filtered0.append(False)
-        filtered1.append(False)
-        filtered2.append(False)
-        filtered3.append(True)
-        filtered4.append(False)
-        filtered5.append(False)
-        filtered6.append(False)
-        filtered7.append(False)
-        filtered8.append(False)
-        filtered9.append(False)
-    elif label == 4:
-        filtered0.append(False)
-        filtered1.append(False)
-        filtered2.append(False)
-        filtered3.append(False)
-        filtered4.append(True)
-        filtered5.append(False)
-        filtered6.append(False)
-        filtered7.append(False)
-        filtered8.append(False)
-        filtered9.append(False)
-    elif label == 5:
-        filtered0.append(False)
-        filtered1.append(False)
-        filtered2.append(False)
-        filtered3.append(False)
-        filtered4.append(False)
-        filtered5.append(True)
-        filtered6.append(False)
-        filtered7.append(False)
-        filtered8.append(False)
-        filtered9.append(False)
-    elif label == 6:
-        filtered0.append(False)
-        filtered1.append(False)
-        filtered2.append(False)
-        filtered3.append(False)
-        filtered4.append(False)
-        filtered5.append(False)
-        filtered6.append(True)
-        filtered7.append(False)
-        filtered8.append(False)
-        filtered9.append(False)
-    elif label == 7:
-        filtered0.append(False)
-        filtered1.append(False)
-        filtered2.append(False)
-        filtered3.append(False)
-        filtered4.append(False)
-        filtered5.append(False)
-        filtered6.append(False)
-        filtered7.append(True)
-        filtered8.append(False)
-        filtered9.append(False)
-    elif label == 8:
-        filtered0.append(False)
-        filtered1.append(False)
-        filtered2.append(False)
-        filtered3.append(False)
-        filtered4.append(False)
-        filtered5.append(False)
-        filtered6.append(False)
-        filtered7.append(False)
-        filtered8.append(True)
-        filtered9.append(False)
-    else:
-        filtered0.append(False)
-        filtered1.append(False)
-        filtered2.append(False)
-        filtered3.append(False)
-        filtered4.append(False)
-        filtered5.append(False)
-        filtered6.append(False)
-        filtered7.append(False)
-        filtered8.append(False)
-        filtered9.append(True)
+filteredl0 = []
+filteredl1 = []
+filteredl2 = []
+filteredl3 = []
+filteredl4 = []
+filteredl5 = []
+filteredl6 = []
+filteredl7 = []
+filteredl8 = []
+filteredl9 = []
 
-filtered1 = np.array(filtered1)
-filtered1 = filtered1.reshape((6500, 1)) #match indexes, not sure if needed
+for label in range(labels.shape[0]):
+    # print(label)
+    # print("label", labels[label])
+    if labels[label] == 0:
+        filtered0.append(images[label])
+        filteredl0.append(array_labels[label]);
+    elif labels[label] == 1:
+        filtered1.append(images[label])
+        filteredl1.append(array_labels[label]);
+    elif labels[label] == 2:
+        filtered2.append(images[label])
+        filteredl2.append(array_labels[label]);
+    elif labels[label] == 3:
+        filteredl3.append(array_labels[label]);
+        filtered3.append(images[label])
+    elif labels[label] == 4:
+        filtered4.append(images[label])
+        filteredl4.append(array_labels[label]);
+    elif labels[label] == 5:
+        filtered5.append(images[label])
+        filteredl5.append(array_labels[label]);
+    elif labels[label] == 6:
+        filtered6.append(images[label])
+        filteredl6.append(array_labels[label]);
+    elif labels[label] == 7:
+        filtered7.append(images[label])
+        filteredl7.append(array_labels[label]);
+    elif labels[label] == 8:
+        filtered8.append(images[label])
+        filteredl8.append(array_labels[label]);
+    else:
+        filtered9.append(images[label])
+        filteredl9.append(9);
+
+
 #print(len(filtered1))
 #print(filtered1.shape)
 #print(images.shape)
 #print(labels.shape)
-one = images[filtered1] #error is here ***** something with array shapes when trying to filter
-rng = np.random.default_rng()
-one = rng.shuffle(one) #shuffle array
-train1_length = round(len(one)*.6) #gets 60% of array
-valid1_length = round(len(one)*.15) #gets 15% of array
-train1 = one[:train1_length] #stores 60% of array
-np.delete(one, np.arange(train1_length)) #deletes 60% of the array
-valid1 = one[:valid1_length] #stores 15% or array
-np.delete(train1, np.arrange(valid1_length)) #deletes 15% of array
-test1 = one #rest of the array goes into test, should be around 25%
 
-two = images[filtered2]
-three = images[filtered3]
-four = images[filtered4]
-five = images[filtered5]
-six = images[filtered6]
-seven = images[filtered7]
-eight = images[filtered8]
-nine = images[filtered9]
-zero = images[filtered0]
+train1_length = round(len(filtered1)*.59) #gets 60% of array
+valid1_length = round(len(filtered1)*.14) #gets 15% of array
+test1_length = round(len(filtered1)*.24) #gets 15% of array
+x_train = filtered0[:train1_length] #stores 60% of array
+y_train = filteredl0[:train1_length]
+x_test = filtered0[train1_length:train1_length+test1_length] #stores 15% or array
+y_test = filteredl0[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
+x_val = filtered0[train1_length + test1_length:train1_length+valid1_length + test1_length]
+y_val = filteredl0[train1_length + test1_length:train1_length+valid1_length + test1_length]
 
+
+
+x_train += filtered1[:train1_length] #stores 60% of array
+y_train += filteredl1[:train1_length]
+x_test += filtered1[train1_length:train1_length+test1_length] #stores 15% or array
+y_test += filteredl1[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
+x_val += filtered1[train1_length + test1_length:train1_length+valid1_length + test1_length]
+y_val += filteredl1[train1_length + test1_length:train1_length+valid1_length + test1_length]
+
+
+x_train += filtered2[:train1_length] #stores 60% of array
+y_train += filteredl2[:train1_length]
+x_test += filtered2[train1_length:train1_length+test1_length] #stores 15% or array
+y_test += filteredl2[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
+x_val += filtered2[train1_length + test1_length:train1_length+valid1_length + test1_length]
+y_val += filteredl2[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+
+
+x_train += filtered3[:train1_length] #stores 60% of array
+y_train += filteredl3[:train1_length]
+x_test += filtered3[train1_length:train1_length+test1_length] #stores 15% or array
+y_test += filteredl3[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
+x_val += filtered3[train1_length + test1_length:train1_length+valid1_length + test1_length]
+y_val += filteredl3[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+
+
+x_train += filtered4[:train1_length] #stores 60% of array
+y_train += filteredl4[:train1_length]
+x_test += filtered4[train1_length:train1_length+test1_length] #stores 15% or array
+y_test += filteredl4[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
+x_val += filtered4[train1_length + test1_length:train1_length+valid1_length + test1_length]
+y_val += filteredl4[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+
+
+x_train += filtered5[:train1_length] #stores 60% of array
+y_train += filteredl5[:train1_length]
+x_test += filtered5[train1_length:train1_length+test1_length] #stores 15% or array
+y_test += filteredl5[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
+x_val += filtered5[train1_length + test1_length:train1_length+valid1_length + test1_length]
+y_val += filteredl5[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+
+
+x_train += filtered6[:train1_length] #stores 60% of array
+y_train += filteredl6[:train1_length]
+x_test += filtered6[train1_length:train1_length+test1_length] #stores 15% or array
+y_test += filteredl6[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
+x_val += filtered6[train1_length + test1_length:train1_length+valid1_length + test1_length]
+y_val += filteredl6[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+
+
+x_train += filtered7[:train1_length] #stores 60% of array
+y_train += filteredl7[:train1_length]
+x_test += filtered7[train1_length:train1_length+test1_length] #stores 15% or array
+y_test += filteredl7[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
+x_val += filtered7[train1_length + test1_length:train1_length+valid1_length + test1_length]
+y_val += filteredl7[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+
+x_train += filtered8[:train1_length] #stores 60% of array
+y_train += filteredl8[:train1_length]
+x_test += filtered8[train1_length:train1_length+test1_length] #stores 15% or array
+y_test += filteredl8[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
+x_val += filtered8[train1_length + test1_length:train1_length+valid1_length + test1_length]
+y_val += filteredl8[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+
+x_train += filtered9[:train1_length] #stores 60% of array
+y_train += filteredl9[:train1_length]
+x_test += filtered9[train1_length:train1_length+test1_length] #stores 15% or array
+y_test += filteredl9[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
+x_val += filtered9[train1_length + test1_length:train1_length+valid1_length + test1_length]
+y_val += filteredl9[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+
+
+
+x_train = np.array(x_train)
+y_train = np.array(y_train)
+x_test = np.array(x_test)
+y_test = np.array(y_test)
+x_val = np.array(x_val)
+y_val = np.array(y_val)
+
+
+
+print(x_train.shape)
+print(y_train.shape)
+print(x_test.shape)
+print(y_test.shape)
+print(x_val.shape)
+print(y_val.shape)
+#
+# two = images[filtered2]
+# three = images[filtered3]
+# four = images[filtered4]
+# five = images[filtered5]
+# six = images[filtered6]
+# seven = images[filtered7]
+# eight = images[filtered8]
+# nine = images[filtered9]
+# zero = images[filtered0]
+#
 
 
 # Model Template
@@ -193,13 +217,13 @@ model.add(Activation('softmax'))
 
 # Compile Model
 model.compile(optimizer='sgd',
-              loss='categorical_crossentropy', 
+              loss='categorical_crossentropy',
               metrics=['accuracy'])
 
 # Train Model
-history = model.fit(x_train, y_train, 
-                    validation_data = (x_val, y_val), 
-                    epochs=10, 
+history = model.fit(x_train, y_train,
+                    validation_data = (x_val, y_val),
+                    epochs=10,
                     batch_size=512)
 
 
