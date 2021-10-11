@@ -219,4 +219,7 @@ history = model.fit(np.array(x_train), np.array(y_train),
 print(history.history)
 #x_test = tf.stack(x_test, axis=0)
 print("Predictions:")
-print(model.predict(np.array(x_test)))
+aPredictionArr = model.predict(np.array(x_test))
+#np.set_printoptions(threshold=np.inf)
+print(aPredictionArr)
+confusion_matrix = tf.math.confusion_matrix(labels=y_test, predictions= aPredictionArr).numpy()
