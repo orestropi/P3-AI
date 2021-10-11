@@ -50,6 +50,7 @@ filteredl8 = []
 filteredl9 = []
 
 for label in range(labels.shape[0]):
+
     array_label = tf.keras.utils.to_categorical(labels[label], num_classes=10, dtype="float32")
     # print(label)
     # print("label", labels[label])
@@ -216,4 +217,6 @@ history = model.fit(np.array(x_train), np.array(y_train),
 # Report Results
 
 print(history.history)
-model.predict(x_train)
+#x_test = tf.stack(x_test, axis=0)
+print("Predictions:")
+model.predict(x_test)
