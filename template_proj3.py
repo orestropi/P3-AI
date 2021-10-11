@@ -2,7 +2,7 @@ from keras.models import Sequential
 from keras.layers import Dense, Activation
 import tensorflow as tf
 import numpy as np
-
+from array import *
 #testing splitting data
 #our_array = np.array([4,5,6,7,8])
 #print(our_array)
@@ -51,39 +51,39 @@ filteredl9 = []
 
 for label in range(labels.shape[0]):
 
-    array_label = tf.keras.utils.to_categorical(labels[label], num_classes=10, dtype="float32")
-    # print(label)
-    # print("label", labels[label])
-    if labels[label] == 0:
-        filtered0.append(images[label])
-        filteredl0.append(array_label);
-    elif labels[label] == 1:
-        filtered1.append(images[label])
-        filteredl1.append(array_label);
-    elif labels[label] == 2:
-        filtered2.append(images[label])
-        filteredl2.append(array_label);
-    elif labels[label] == 3:
-        filteredl3.append(images[label]);
-        filtered3.append(array_label)
-    elif labels[label] == 4:
-        filtered4.append(images[label])
-        filteredl4.append(array_label);
-    elif labels[label] == 5:
-        filtered5.append(images[label])
-        filteredl5.append(array_label);
-    elif labels[label] == 6:
-        filtered6.append(images[label])
-        filteredl6.append(array_label);
-    elif labels[label] == 7:
-        filtered7.append(images[label])
-        filteredl7.append(array_label);
-    elif labels[label] == 8:
-        filtered8.append(images[label])
-        filteredl8.append(array_label);
-    else:
-        filtered9.append(images[label])
-        filteredl9.append(array_label);
+   array_label = tf.keras.utils.to_categorical(labels[label], num_classes=10, dtype="float32")
+   # print(label)
+   # print("label", labels[label])
+   if labels[label] == 0:
+       filtered0.append(images[label])
+       filteredl0.append(array_label);
+   elif labels[label] == 1:
+       filtered1.append(images[label])
+       filteredl1.append(array_label);
+   elif labels[label] == 2:
+       filtered2.append(images[label])
+       filteredl2.append(array_label);
+   elif labels[label] == 3:
+       filteredl3.append(array_label);
+       filtered3.append(images[label])
+   elif labels[label] == 4:
+       filtered4.append(images[label])
+       filteredl4.append(array_label);
+   elif labels[label] == 5:
+       filtered5.append(images[label])
+       filteredl5.append(array_label);
+   elif labels[label] == 6:
+       filtered6.append(images[label])
+       filteredl6.append(array_label);
+   elif labels[label] == 7:
+       filtered7.append(images[label])
+       filteredl7.append(array_label);
+   elif labels[label] == 8:
+       filtered8.append(images[label])
+       filteredl8.append(array_label);
+   else:
+       filtered9.append(images[label])
+       filteredl9.append(array_label);
 
 
 #print(len(filtered1))
@@ -204,14 +204,14 @@ model.add(Activation('softmax'))
 
 # Compile Model
 model.compile(optimizer='sgd',
-              loss='categorical_crossentropy',
-              metrics=['accuracy'])
+             loss='categorical_crossentropy',
+             metrics=['accuracy'])
 
 # Train Model
 history = model.fit(np.array(x_train), np.array(y_train),
-                    validation_data = (np.array(x_val), np.array(y_val)),
-                    epochs=10,
-                    batch_size=512)
+                   validation_data = (np.array(x_val), np.array(y_val)),
+                   epochs=10,
+                   batch_size=512)
 
 
 # Report Results
@@ -219,4 +219,4 @@ history = model.fit(np.array(x_train), np.array(y_train),
 print(history.history)
 #x_test = tf.stack(x_test, axis=0)
 print("Predictions:")
-model.predict(x_test)
+print(model.predict(np.array(x_test)))
