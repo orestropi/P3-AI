@@ -63,8 +63,8 @@ for label in range(labels.shape[0]):
         filtered2.append(images[label])
         filteredl2.append(array_label);
     elif labels[label] == 3:
-        filteredl3.append(array_label);
-        filtered3.append(images[label])
+        filteredl3.append(images[label]);
+        filtered3.append(array_label)
     elif labels[label] == 4:
         filtered4.append(images[label])
         filteredl4.append(array_label);
