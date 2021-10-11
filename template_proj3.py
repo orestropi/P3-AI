@@ -23,7 +23,7 @@ print(images.shape)
 print(images)
 labels = np.load("labels.npy")
 print(labels.shape)
-array_labels = tf.keras.utils.to_categorical(labels, num_classes=None)
+
 print(labels)
 
 #stratified sampling
@@ -50,38 +50,39 @@ filteredl8 = []
 filteredl9 = []
 
 for label in range(labels.shape[0]):
+    array_label = tf.keras.utils.to_categorical(labels[label], num_classes=10, dtype="float32")
     # print(label)
     # print("label", labels[label])
     if labels[label] == 0:
         filtered0.append(images[label])
-        filteredl0.append(array_labels[label]);
+        filteredl0.append(array_label);
     elif labels[label] == 1:
         filtered1.append(images[label])
-        filteredl1.append(array_labels[label]);
+        filteredl1.append(array_label);
     elif labels[label] == 2:
         filtered2.append(images[label])
-        filteredl2.append(array_labels[label]);
+        filteredl2.append(array_label);
     elif labels[label] == 3:
-        filteredl3.append(array_labels[label]);
+        filteredl3.append(array_label);
         filtered3.append(images[label])
     elif labels[label] == 4:
         filtered4.append(images[label])
-        filteredl4.append(array_labels[label]);
+        filteredl4.append(array_label);
     elif labels[label] == 5:
         filtered5.append(images[label])
-        filteredl5.append(array_labels[label]);
+        filteredl5.append(array_label);
     elif labels[label] == 6:
         filtered6.append(images[label])
-        filteredl6.append(array_labels[label]);
+        filteredl6.append(array_label);
     elif labels[label] == 7:
         filtered7.append(images[label])
-        filteredl7.append(array_labels[label]);
+        filteredl7.append(array_label);
     elif labels[label] == 8:
         filtered8.append(images[label])
-        filteredl8.append(array_labels[label]);
+        filteredl8.append(array_label);
     else:
         filtered9.append(images[label])
-        filteredl9.append(9);
+        filteredl9.append(array_label);
 
 
 #print(len(filtered1))
@@ -101,92 +102,77 @@ y_val = filteredl0[train1_length + test1_length:train1_length+valid1_length + te
 
 
 
-x_train += filtered1[:train1_length] #stores 60% of array
-y_train += filteredl1[:train1_length]
-x_test += filtered1[train1_length:train1_length+test1_length] #stores 15% or array
-y_test += filteredl1[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
-x_val += filtered1[train1_length + test1_length:train1_length+valid1_length + test1_length]
-y_val += filteredl1[train1_length + test1_length:train1_length+valid1_length + test1_length]
+x_train.extend(filtered1[:train1_length]) #stores 60% of array
+y_train.extend(filteredl1[:train1_length])
+x_test.extend(filtered1[train1_length:train1_length+test1_length]) #stores 15% or array
+y_test.extend(filteredl1[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_val.extend(filtered1[train1_length + test1_length:train1_length+valid1_length + test1_length])
+y_val.extend(filteredl1[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
 
-x_train += filtered2[:train1_length] #stores 60% of array
-y_train += filteredl2[:train1_length]
-x_test += filtered2[train1_length:train1_length+test1_length] #stores 15% or array
-y_test += filteredl2[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
-x_val += filtered2[train1_length + test1_length:train1_length+valid1_length + test1_length]
-y_val += filteredl2[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+x_train.extend(filtered2[:train1_length]) #stores 60% of array
+y_train.extend(filteredl2[:train1_length])
+x_test.extend(filtered2[train1_length:train1_length+test1_length]) #stores 15% or array
+y_test.extend(filteredl2[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_val.extend(filtered2[train1_length + test1_length:train1_length+valid1_length + test1_length])
+y_val.extend(filteredl2[train1_length + test1_length:train1_length+valid1_length + test1_length])#rest of the array goes into test, should be around 25%
 
 
-x_train += filtered3[:train1_length] #stores 60% of array
-y_train += filteredl3[:train1_length]
-x_test += filtered3[train1_length:train1_length+test1_length] #stores 15% or array
-y_test += filteredl3[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
-x_val += filtered3[train1_length + test1_length:train1_length+valid1_length + test1_length]
-y_val += filteredl3[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+x_train.extend(filtered3[:train1_length]) #stores 60% of array
+y_train.extend(filteredl3[:train1_length])
+x_test.extend(filtered3[train1_length:train1_length+test1_length]) #stores 15% or array
+y_test.extend(filteredl3[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_val.extend(filtered3[train1_length + test1_length:train1_length+valid1_length + test1_length])
+y_val.extend(filteredl3[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
 
-x_train += filtered4[:train1_length] #stores 60% of array
-y_train += filteredl4[:train1_length]
-x_test += filtered4[train1_length:train1_length+test1_length] #stores 15% or array
-y_test += filteredl4[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
-x_val += filtered4[train1_length + test1_length:train1_length+valid1_length + test1_length]
-y_val += filteredl4[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+x_train.extend(filtered4[:train1_length]) #stores 60% of array
+y_train.extend(filteredl4[:train1_length])
+x_test.extend(filtered4[train1_length:train1_length+test1_length]) #stores 15% or array
+y_test.extend(filteredl4[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_val.extend(filtered4[train1_length + test1_length:train1_length+valid1_length + test1_length])
+y_val.extend(filteredl4[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
 
-x_train += filtered5[:train1_length] #stores 60% of array
-y_train += filteredl5[:train1_length]
-x_test += filtered5[train1_length:train1_length+test1_length] #stores 15% or array
-y_test += filteredl5[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
-x_val += filtered5[train1_length + test1_length:train1_length+valid1_length + test1_length]
-y_val += filteredl5[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+x_train.extend(filtered5[:train1_length]) #stores 60% of array
+y_train.extend(filteredl5[:train1_length])
+x_test.extend(filtered5[train1_length:train1_length+test1_length]) #stores 15% or array
+y_test.extend(filteredl5[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_val.extend(filtered5[train1_length + test1_length:train1_length+valid1_length + test1_length])
+y_val.extend(filteredl5[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
 
-x_train += filtered6[:train1_length] #stores 60% of array
-y_train += filteredl6[:train1_length]
-x_test += filtered6[train1_length:train1_length+test1_length] #stores 15% or array
-y_test += filteredl6[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
-x_val += filtered6[train1_length + test1_length:train1_length+valid1_length + test1_length]
-y_val += filteredl6[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+x_train.extend(filtered6[:train1_length]) #stores 60% of array
+y_train.extend(filteredl6[:train1_length])
+x_test.extend(filtered6[train1_length:train1_length+test1_length]) #stores 15% or array
+y_test.extend(filteredl6[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_val.extend(filtered6[train1_length + test1_length:train1_length+valid1_length + test1_length])
+y_val.extend(filteredl6[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
 
-x_train += filtered7[:train1_length] #stores 60% of array
-y_train += filteredl7[:train1_length]
-x_test += filtered7[train1_length:train1_length+test1_length] #stores 15% or array
-y_test += filteredl7[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
-x_val += filtered7[train1_length + test1_length:train1_length+valid1_length + test1_length]
-y_val += filteredl7[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+x_train.extend(filtered7[:train1_length]) #stores 60% of array
+y_train.extend(filteredl7[:train1_length])
+x_test.extend(filtered7[train1_length:train1_length+test1_length]) #stores 15% or array
+y_test.extend(filteredl7[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_val.extend(filtered7[train1_length + test1_length:train1_length+valid1_length + test1_length])
+y_val.extend(filteredl7[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
-x_train += filtered8[:train1_length] #stores 60% of array
-y_train += filteredl8[:train1_length]
-x_test += filtered8[train1_length:train1_length+test1_length] #stores 15% or array
-y_test += filteredl8[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
-x_val += filtered8[train1_length + test1_length:train1_length+valid1_length + test1_length]
-y_val += filteredl8[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
+x_train.extend(filtered8[:train1_length]) #stores 60% of array
+y_train.extend(filteredl8[:train1_length])
+x_test.extend(filtered8[train1_length:train1_length+test1_length]) #stores 15% or array
+y_test.extend(filteredl8[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_val.extend(filtered8[train1_length + test1_length:train1_length+valid1_length + test1_length])
+y_val.extend(filteredl8[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
-x_train += filtered9[:train1_length] #stores 60% of array
-y_train += filteredl9[:train1_length]
-x_test += filtered9[train1_length:train1_length+test1_length] #stores 15% or array
-y_test += filteredl9[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
-x_val += filtered9[train1_length + test1_length:train1_length+valid1_length + test1_length]
-y_val += filteredl9[train1_length + test1_length:train1_length+valid1_length + test1_length] #rest of the array goes into test, should be around 25%
-
-
-
-x_train = np.array(x_train)
-y_train = np.array(y_train)
-x_test = np.array(x_test)
-y_test = np.array(y_test)
-x_val = np.array(x_val)
-y_val = np.array(y_val)
+x_train.extend(filtered9[:train1_length]) #stores 60% of array
+y_train.extend(filteredl9[:train1_length])
+x_test.extend(filtered9[train1_length:train1_length+test1_length]) #stores 15% or array
+y_test.extend(filteredl9[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_val.extend(filtered9[train1_length + test1_length:train1_length+valid1_length + test1_length])
+y_val.extend(filteredl9[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
 
 
-print(x_train.shape)
-print(y_train.shape)
-print(x_test.shape)
-print(y_test.shape)
-print(x_val.shape)
-print(y_val.shape)
 #
 # two = images[filtered2]
 # three = images[filtered3]
@@ -221,8 +207,8 @@ model.compile(optimizer='sgd',
               metrics=['accuracy'])
 
 # Train Model
-history = model.fit(x_train, y_train,
-                    validation_data = (x_val, y_val),
+history = model.fit(np.array(x_train), np.array(y_train),
+                    validation_data = (np.array(x_val), np.array(y_val)),
                     epochs=10,
                     batch_size=512)
 
@@ -230,4 +216,4 @@ history = model.fit(x_train, y_train,
 # Report Results
 
 print(history.history)
-model.predict()
+model.predict(x_train)
