@@ -198,6 +198,14 @@ model.add(Activation('relu'))
 # Fill in Model Here
 #
 #
+model.add(Dense(250, activation='relu'))
+model.add(Dense(250, activation='relu'))
+model.add(Dense(250, activation='relu'))
+
+
+
+
+
 model.add(Dense(10, kernel_initializer='he_normal')) # last layer
 model.add(Activation('softmax'))
 
@@ -210,8 +218,8 @@ model.compile(optimizer='sgd',
 # Train Model
 history = model.fit(np.array(x_train), np.array(y_train),
                    validation_data = (np.array(x_val), np.array(y_val)),
-                   epochs=10,
-                   batch_size=512)
+                   epochs=100,
+                   batch_size=12)
 
 
 # Report Results
