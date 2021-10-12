@@ -193,11 +193,11 @@ y_val.extend(filteredl9[train1_length + test1_length:train1_length+valid1_length
 model = Sequential() # declare model
 model.add(Dense(10, input_shape=(28*28, ), kernel_initializer='he_normal')) # first layer
 model.add(Activation('relu'))
-model.add(Dropout(0.5))
+model.add(Dropout(0.01))
 model.add(Dense(64, activation='relu',
     kernel_initializer=initializers.RandomNormal(stddev=0.01),
     bias_initializer=initializers.Zeros()))
-model.add(Dropout(0.5))
+model.add(Dropout(0.01))
 model.add(Dense(10, activation='softmax', kernel_initializer=initializers.RandomNormal(stddev=0.01),
     bias_initializer=initializers.Zeros()))
 #
@@ -218,7 +218,7 @@ model.compile(optimizer='sgd',
 # Train Model
 history = model.fit(np.array(x_train), np.array(y_train),
                    validation_data = (np.array(x_val), np.array(y_val)),
-                   epochs=100,
+                   epochs=300,
                    batch_size=512)
 
 
