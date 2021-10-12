@@ -191,7 +191,7 @@ y_val.extend(filteredl9[train1_length + test1_length:train1_length+valid1_length
 # Model Template
 
 model = Sequential() # declare model
-model.add(Dense(10, input_shape=(28*28, ), kernel_initializer='he_normal')) # first layer
+model.add(Dense(40, input_shape=(28*28, ), kernel_initializer='he_normal')) # first layer
 model.add(Activation('relu'))
 model.add(Dropout(0.01))
 model.add(Dense(64, activation='relu',
@@ -200,6 +200,10 @@ model.add(Dense(64, activation='relu',
 model.add(Dropout(0.01))
 model.add(Dense(10, activation='softmax', kernel_initializer=initializers.RandomNormal(stddev=0.01),
     bias_initializer=initializers.Zeros()))
+model.add(tf.keras.layers.Dense(64, kernel_initializer='lecun_normal',
+                                activation='tanh'))
+model.add(tf.keras.layers.Dense(64, kernel_initializer='lecun_normal',
+                                activation='selu'))
 #
 #
 #
@@ -218,8 +222,8 @@ model.compile(optimizer='sgd',
 # Train Model
 history = model.fit(np.array(x_train), np.array(y_train),
                    validation_data = (np.array(x_val), np.array(y_val)),
-                   epochs=300,
-                   batch_size=512)
+                   epochs=200,
+                   batch_size=300)
 
 
 # Report Results
@@ -233,4 +237,8 @@ print(aPredictionArr)
 #confusion_matrix = tf.math.confusion_matrix(labels=y_test, predictions= aPredictionArr).numpy()
 con_matrix = tf.math.confusion_matrix([np.argmax(t) for t in y_test], [np.argmax(p) for p in aPredictionArr])
 print("confusion matrix:")
+totalRight = 0
+for i in range(0, 10):
+    totalRight += con_matrix[i][i]
+print(totalRight/1560)
 print(con_matrix)
