@@ -191,17 +191,21 @@ y_val.extend(filteredl9[train1_length + test1_length:train1_length+valid1_length
 # Model Template
 
 model = Sequential() # declare model
-model.add(Dense(40, input_shape=(28*28, ), kernel_initializer='he_normal')) # first layer
+model.add(Dense(45, input_shape=(28*28, ), kernel_initializer='he_normal')) # first layer
 model.add(Activation('relu'))
-model.add(Dropout(0.001))
 model.add(Dense(64, activation='relu',kernel_initializer=initializers.RandomNormal(stddev=0.1),bias_initializer=initializers.Zeros()))
+model.add(Dropout(0.01))
 #model.add(Dense(30, activation='softmax', kernel_initializer=initializers.RandomNormal(stddev=0.01),bias_initializer=initializers.Zeros()))
-model.add(tf.keras.layers.Dense(64, kernel_initializer='lecun_normal',activation='tanh'))
-model.add(tf.keras.layers.Dense(64, kernel_initializer='lecun_normal',activation='selu'))
-model.add(tf.keras.layers.Dense(64, kernel_initializer='lecun_normal',activation='tanh'))
-model.add(tf.keras.layers.Dense(64, kernel_initializer='lecun_normal',activation='selu'))
-model.add(tf.keras.layers.Dense(64, kernel_initializer='lecun_normal',activation='tanh'))
-model.add(tf.keras.layers.Dense(64, kernel_initializer='lecun_normal',activation='selu'))
+#model.add(tf.keras.layers.Dense(50, kernel_initializer='lecun_normal',activation='tanh'))
+#model.add(tf.keras.layers.Dense(62, kernel_initializer='lecun_normal',activation='selu'))
+#model.add(Dropout(0.01))
+#model.add(tf.keras.layers.Dense(50, kernel_initializer='lecun_normal',activation='tanh'))
+#model.add(tf.keras.layers.Dense(62, kernel_initializer='lecun_normal',activation='selu'))
+
+model.add(tf.keras.layers.Dense(512, kernel_initializer='lecun_normal',activation='tanh'))
+model.add(tf.keras.layers.Dense(1024, kernel_initializer='lecun_normal',activation='selu'))
+model.add(Dropout(0.5))
+
 #model.add(tf.keras.layers.Dense(32, kernel_initializer='lecun_normal',activation='tanh'))
 #model.add(tf.keras.layers.Dense(32, kernel_initializer='lecun_normal',activation='selu'))
 #model.add(Dropout(0.01))
