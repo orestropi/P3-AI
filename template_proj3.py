@@ -1,7 +1,8 @@
 from keras.models import Sequential
-from keras.layers import Dense, Activation
+from keras.layers import Dense, Activation, Dropout
 import tensorflow as tf
 import numpy as np
+from tensorflow.keras import initializers
 from array import *
 #testing splitting data
 #our_array = np.array([4,5,6,7,8])
@@ -192,20 +193,19 @@ y_val.extend(filteredl9[train1_length + test1_length:train1_length+valid1_length
 model = Sequential() # declare model
 model.add(Dense(10, input_shape=(28*28, ), kernel_initializer='he_normal')) # first layer
 model.add(Activation('relu'))
+model.add(Dropout(0.5))
+model.add(Dense(64, activation='relu',
+    kernel_initializer=initializers.RandomNormal(stddev=0.01),
+    bias_initializer=initializers.Zeros()))
+model.add(Dropout(0.5))
+model.add(Dense(10, activation='softmax', kernel_initializer=initializers.RandomNormal(stddev=0.01),
+    bias_initializer=initializers.Zeros()))
 #
 #
 #
 # Fill in Model Here
 #
 #
-model.add(Dense(250, activation='relu'))
-model.add(Dense(250, activation='relu'))
-model.add(Dense(250, activation='relu'))
-
-
-
-
-
 model.add(Dense(10, kernel_initializer='he_normal')) # last layer
 model.add(Activation('softmax'))
 
@@ -219,7 +219,7 @@ model.compile(optimizer='sgd',
 history = model.fit(np.array(x_train), np.array(y_train),
                    validation_data = (np.array(x_val), np.array(y_val)),
                    epochs=100,
-                   batch_size=12)
+                   batch_size=512)
 
 
 # Report Results
