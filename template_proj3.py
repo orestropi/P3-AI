@@ -1,10 +1,13 @@
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
-import tensorflow as tf
+import tensorflow as tf #used to make confusion matrix
 import numpy as np
-from tensorflow.keras import initializers
-from PIL import Image as im
-from array import *
+from tensorflow.keras import initializers #used for model creation
+from PIL import Image as im #used to convert matrix into black and white image
+from matplotlib import pyplot as plt #used to plot the accuracies
+
+#commented out now, just used to make sure our data was splitting correctly
+
 #testing splitting data
 #our_array = np.array([4,5,6,7,8])
 #print(our_array)
@@ -17,18 +20,16 @@ from array import *
 #print(our_array)
 
 #preprocessing
-from tensorflow._api.v2 import math
-
-images = np.load("images.npy")
-print(images.shape)
-#images.resize((1,784))
-print(images)
-labels = np.load("labels.npy")
-print(labels.shape)
-
-print(labels)
+images = np.load("images.npy") #loading images
+#print(images.shape)
+#print(images)
+labels = np.load("labels.npy") #loading corresponding labels
+#print(labels.shape)
+#print(labels)
 
 #stratified sampling
+
+#initializing arrays for sorting by label, the images will be stored here
 filtered0 = []
 filtered1 = []
 filtered2 = []
@@ -40,6 +41,7 @@ filtered7 = []
 filtered8 = []
 filtered9 = []
 
+#initializing arrays for sorting by label, labels will be stored here
 filteredl0 = []
 filteredl1 = []
 filteredl2 = []
@@ -51,108 +53,104 @@ filteredl7 = []
 filteredl8 = []
 filteredl9 = []
 
+#go through every label and sort itself and the corresponding image and place in correct array
 for label in range(labels.shape[0]):
+    #change the labels from int to array of zeros and one
+    array_label = tf.keras.utils.to_categorical(labels[label], num_classes=10, dtype="float32")
+    #check the int value of the label and place corresponding array label and image into correct array
+    if labels[label] == 0:
+        filtered0.append(images[label])
+        filteredl0.append(array_label);
+    elif labels[label] == 1:
+        filtered1.append(images[label])
+        filteredl1.append(array_label);
+    elif labels[label] == 2:
+        filtered2.append(images[label])
+        filteredl2.append(array_label);
+    elif labels[label] == 3:
+        filteredl3.append(array_label);
+        filtered3.append(images[label])
+    elif labels[label] == 4:
+        filtered4.append(images[label])
+        filteredl4.append(array_label);
+    elif labels[label] == 5:
+        filtered5.append(images[label])
+        filteredl5.append(array_label);
+    elif labels[label] == 6:
+        filtered6.append(images[label])
+        filteredl6.append(array_label);
+    elif labels[label] == 7:
+        filtered7.append(images[label])
+        filteredl7.append(array_label);
+    elif labels[label] == 8:
+        filtered8.append(images[label])
+        filteredl8.append(array_label);
+    else:
+        filtered9.append(images[label])
+        filteredl9.append(array_label);
 
-   array_label = tf.keras.utils.to_categorical(labels[label], num_classes=10, dtype="float32")
-   # print(label)
-   # print("label", labels[label])
-   if labels[label] == 0:
-       filtered0.append(images[label])
-       filteredl0.append(array_label);
-   elif labels[label] == 1:
-       filtered1.append(images[label])
-       filteredl1.append(array_label);
-   elif labels[label] == 2:
-       filtered2.append(images[label])
-       filteredl2.append(array_label);
-   elif labels[label] == 3:
-       filteredl3.append(array_label);
-       filtered3.append(images[label])
-   elif labels[label] == 4:
-       filtered4.append(images[label])
-       filteredl4.append(array_label);
-   elif labels[label] == 5:
-       filtered5.append(images[label])
-       filteredl5.append(array_label);
-   elif labels[label] == 6:
-       filtered6.append(images[label])
-       filteredl6.append(array_label);
-   elif labels[label] == 7:
-       filtered7.append(images[label])
-       filteredl7.append(array_label);
-   elif labels[label] == 8:
-       filtered8.append(images[label])
-       filteredl8.append(array_label);
-   else:
-       filtered9.append(images[label])
-       filteredl9.append(array_label);
+#splitting the data into test, valid, and train sets
 
+#go through the images with label 0 and take 60% and put in training, 15% in valid, and 25% in test set
+train1_length = round(len(filtered1)*.59) #gets the length of 60% of array
+valid1_length = round(len(filtered1)*.14) #gets the length of 15% of array
+test1_length = round(len(filtered1)*.24) #gets the length of 25% of array
+x_train = filtered0[:train1_length] #stores 60% of array images for training set
+y_train = filteredl0[:train1_length] #stores 60% or array labels for training set
+x_test = filtered0[train1_length:train1_length+test1_length] #stores 25% of array images for test set
+y_test = filteredl0[train1_length:train1_length+test1_length] #stores 25% of array labels for test set
+x_val = filtered0[train1_length + test1_length:train1_length+valid1_length + test1_length] #stores 15% of array images for valid set
+y_val = filteredl0[train1_length + test1_length:train1_length+valid1_length + test1_length] #stores 15% of array labels for valid set
 
-#print(len(filtered1))
-#print(filtered1.shape)
-#print(images.shape)
-#print(labels.shape)
-
-train1_length = round(len(filtered1)*.59) #gets 60% of array
-valid1_length = round(len(filtered1)*.14) #gets 15% of array
-test1_length = round(len(filtered1)*.24) #gets 15% of array
-x_train = filtered0[:train1_length] #stores 60% of array
-y_train = filteredl0[:train1_length]
-x_test = filtered0[train1_length:train1_length+test1_length] #stores 15% or array
-y_test = filteredl0[train1_length:train1_length+test1_length] #rest of the array goes into test, should be around 25%
-x_val = filtered0[train1_length + test1_length:train1_length+valid1_length + test1_length]
-y_val = filteredl0[train1_length + test1_length:train1_length+valid1_length + test1_length]
-
-
-
-x_train.extend(filtered1[:train1_length]) #stores 60% of array
+#go through the images with label 1 and take 60% and put in training, 15% in valid, and 25% in test set
+x_train.extend(filtered1[:train1_length])
 y_train.extend(filteredl1[:train1_length])
-x_test.extend(filtered1[train1_length:train1_length+test1_length]) #stores 15% or array
-y_test.extend(filteredl1[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_test.extend(filtered1[train1_length:train1_length+test1_length])
+y_test.extend(filteredl1[train1_length:train1_length+test1_length])
 x_val.extend(filtered1[train1_length + test1_length:train1_length+valid1_length + test1_length])
 y_val.extend(filteredl1[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
-
-x_train.extend(filtered2[:train1_length]) #stores 60% of array
+#go through the images with label 2 and take 60% and put in training, 15% in valid, and 25% in test set
+x_train.extend(filtered2[:train1_length])
 y_train.extend(filteredl2[:train1_length])
-x_test.extend(filtered2[train1_length:train1_length+test1_length]) #stores 15% or array
-y_test.extend(filteredl2[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_test.extend(filtered2[train1_length:train1_length+test1_length])
+y_test.extend(filteredl2[train1_length:train1_length+test1_length])
 x_val.extend(filtered2[train1_length + test1_length:train1_length+valid1_length + test1_length])
-y_val.extend(filteredl2[train1_length + test1_length:train1_length+valid1_length + test1_length])#rest of the array goes into test, should be around 25%
+y_val.extend(filteredl2[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
-
-x_train.extend(filtered3[:train1_length]) #stores 60% of array
+#go through the images with label 3 and take 60% and put in training, 15% in valid, and 25% in test set
+x_train.extend(filtered3[:train1_length])
 y_train.extend(filteredl3[:train1_length])
-x_test.extend(filtered3[train1_length:train1_length+test1_length]) #stores 15% or array
-y_test.extend(filteredl3[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_test.extend(filtered3[train1_length:train1_length+test1_length])
+y_test.extend(filteredl3[train1_length:train1_length+test1_length])
 x_val.extend(filtered3[train1_length + test1_length:train1_length+valid1_length + test1_length])
 y_val.extend(filteredl3[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
-
-x_train.extend(filtered4[:train1_length]) #stores 60% of array
+#go through the images with label 4 and take 60% and put in training, 15% in valid, and 25% in test set
+x_train.extend(filtered4[:train1_length])
 y_train.extend(filteredl4[:train1_length])
-x_test.extend(filtered4[train1_length:train1_length+test1_length]) #stores 15% or array
-y_test.extend(filteredl4[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_test.extend(filtered4[train1_length:train1_length+test1_length])
+y_test.extend(filteredl4[train1_length:train1_length+test1_length])
 x_val.extend(filtered4[train1_length + test1_length:train1_length+valid1_length + test1_length])
 y_val.extend(filteredl4[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
-
-x_train.extend(filtered5[:train1_length]) #stores 60% of array
+#go through the images with label 5 and take 60% and put in training, 15% in valid, and 25% in test set
+x_train.extend(filtered5[:train1_length])
 y_train.extend(filteredl5[:train1_length])
-x_test.extend(filtered5[train1_length:train1_length+test1_length]) #stores 15% or array
-y_test.extend(filteredl5[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_test.extend(filtered5[train1_length:train1_length+test1_length])
+y_test.extend(filteredl5[train1_length:train1_length+test1_length])
 x_val.extend(filtered5[train1_length + test1_length:train1_length+valid1_length + test1_length])
 y_val.extend(filteredl5[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
-
-x_train.extend(filtered6[:train1_length]) #stores 60% of array
+#go through the images with label 6 and take 60% and put in training, 15% in valid, and 25% in test set
+x_train.extend(filtered6[:train1_length])
 y_train.extend(filteredl6[:train1_length])
-x_test.extend(filtered6[train1_length:train1_length+test1_length]) #stores 15% or array
-y_test.extend(filteredl6[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_test.extend(filtered6[train1_length:train1_length+test1_length])
+y_test.extend(filteredl6[train1_length:train1_length+test1_length])
 x_val.extend(filtered6[train1_length + test1_length:train1_length+valid1_length + test1_length])
 y_val.extend(filteredl6[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
-
+#go through the images with label 7 and take 60% and put in training, 15% in valid, and 25% in test set
 x_train.extend(filtered7[:train1_length]) #stores 60% of array
 y_train.extend(filteredl7[:train1_length])
 x_test.extend(filtered7[train1_length:train1_length+test1_length]) #stores 15% or array
@@ -240,6 +238,14 @@ history = model.fit(np.array(x_train), np.array(y_train),
 # Report Results
 
 print(history.history)
+#plotting
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('Training and Validation Accuracy over Time')
+plt.ylabel('Accuracy')
+plt.xlabel('Number of training epochs')
+plt.legend(['Training set', 'Validation set'], loc='upper left')
+plt.show()
 #x_test = tf.stack(x_test, axis=0)
 print("Predictions:")
 aPredictionArr = model.predict(np.array(x_test))
