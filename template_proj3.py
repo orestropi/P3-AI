@@ -238,6 +238,9 @@ for i in range(0, 10):
     totalRight += con_matrix[i][i] #counts the number of predictions on the diagonal
 print(totalRight/1560) #total number of diagonal predicions divided by total number of images (gives a percent)
 
+#save model
+model.save('project_3_model')
+
 #plotting
 plt.plot(history.history['accuracy']) #training accuracy data
 plt.plot(history.history['val_accuracy']) #validation set data
