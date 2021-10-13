@@ -1,6 +1,6 @@
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
-import tensorflow as tf #used to make confusion matrix
+import tensorflow as tf #used to make confusion matrix and add to model
 import numpy as np
 from tensorflow.keras import initializers #used for model creation
 from PIL import Image as im #used to convert matrix into black and white image
@@ -151,74 +151,41 @@ x_val.extend(filtered6[train1_length + test1_length:train1_length+valid1_length 
 y_val.extend(filteredl6[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
 #go through the images with label 7 and take 60% and put in training, 15% in valid, and 25% in test set
-x_train.extend(filtered7[:train1_length]) #stores 60% of array
+x_train.extend(filtered7[:train1_length])
 y_train.extend(filteredl7[:train1_length])
-x_test.extend(filtered7[train1_length:train1_length+test1_length]) #stores 15% or array
-y_test.extend(filteredl7[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_test.extend(filtered7[train1_length:train1_length+test1_length])
+y_test.extend(filteredl7[train1_length:train1_length+test1_length])
 x_val.extend(filtered7[train1_length + test1_length:train1_length+valid1_length + test1_length])
 y_val.extend(filteredl7[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
-x_train.extend(filtered8[:train1_length]) #stores 60% of array
+#go through the images with label 8 and take 60% and put in training, 15% in valid, and 25% in test set
+x_train.extend(filtered8[:train1_length])
 y_train.extend(filteredl8[:train1_length])
-x_test.extend(filtered8[train1_length:train1_length+test1_length]) #stores 15% or array
-y_test.extend(filteredl8[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_test.extend(filtered8[train1_length:train1_length+test1_length])
+y_test.extend(filteredl8[train1_length:train1_length+test1_length])
 x_val.extend(filtered8[train1_length + test1_length:train1_length+valid1_length + test1_length])
 y_val.extend(filteredl8[train1_length + test1_length:train1_length+valid1_length + test1_length])
 
-x_train.extend(filtered9[:train1_length]) #stores 60% of array
+#go through the images with label 8 and take 60% and put in training, 15% in valid, and 25% in test set
+x_train.extend(filtered9[:train1_length])
 y_train.extend(filteredl9[:train1_length])
-x_test.extend(filtered9[train1_length:train1_length+test1_length]) #stores 15% or array
-y_test.extend(filteredl9[train1_length:train1_length+test1_length]) #rest of the array goes into test, should be around 25%
+x_test.extend(filtered9[train1_length:train1_length+test1_length])
+y_test.extend(filteredl9[train1_length:train1_length+test1_length])
 x_val.extend(filtered9[train1_length + test1_length:train1_length+valid1_length + test1_length])
 y_val.extend(filteredl9[train1_length + test1_length:train1_length+valid1_length + test1_length])
-
-
-
-#
-# two = images[filtered2]
-# three = images[filtered3]
-# four = images[filtered4]
-# five = images[filtered5]
-# six = images[filtered6]
-# seven = images[filtered7]
-# eight = images[filtered8]
-# nine = images[filtered9]
-# zero = images[filtered0]
-#
 
 
 # Model Template
 
 model = Sequential() # declare model
-model.add(Dense(45, input_shape=(28*28, ), kernel_initializer='he_normal')) # first layer
+model.add(Dense(45, input_shape=(28*28, ), kernel_initializer='lecun_normal')) # first layer
+
+#model filled in here
 model.add(Activation('relu'))
-model.add(Dense(64, activation='relu',kernel_initializer=initializers.RandomNormal(stddev=0.1),bias_initializer=initializers.Zeros()))
-model.add(Dropout(0.01))
-#model.add(Dense(30, activation='softmax', kernel_initializer=initializers.RandomNormal(stddev=0.01),bias_initializer=initializers.Zeros()))
-#model.add(tf.keras.layers.Dense(50, kernel_initializer='lecun_normal',activation='tanh'))
-#model.add(tf.keras.layers.Dense(62, kernel_initializer='lecun_normal',activation='selu'))
-#model.add(Dropout(0.01))
-#model.add(tf.keras.layers.Dense(50, kernel_initializer='lecun_normal',activation='tanh'))
-#model.add(tf.keras.layers.Dense(62, kernel_initializer='lecun_normal',activation='selu'))
+model.add(Dense(640, activation='tanh',kernel_initializer=initializers.RandomNormal(stddev=0.0001)))
+model.add(tf.keras.layers.Dense(400, kernel_initializer='lecun_normal',activation='tanh'))
+model.add(Dropout(.05))
 
-model.add(tf.keras.layers.Dense(512, kernel_initializer='lecun_normal',activation='tanh'))
-model.add(tf.keras.layers.Dense(1024, kernel_initializer='lecun_normal',activation='selu'))
-model.add(Dropout(0.5))
-
-#model.add(tf.keras.layers.Dense(32, kernel_initializer='lecun_normal',activation='tanh'))
-#model.add(tf.keras.layers.Dense(32, kernel_initializer='lecun_normal',activation='selu'))
-#model.add(Dropout(0.01))
-#model.add(Dense(1, activation='sigmoid'))
-
-#model.add(Dense(256, activation='relu'))
-#model.add(Dropout(0.001))
-#model.add(Dense(10, activation='softmax'))
-#
-#
-#
-# Fill in Model Here
-#
-#
 model.add(Dense(10, kernel_initializer='he_normal')) # last layer
 model.add(Activation('softmax'))
 
@@ -238,21 +205,16 @@ history = model.fit(np.array(x_train), np.array(y_train),
 # Report Results
 
 print(history.history)
-#plotting
-plt.plot(history.history['accuracy'])
-plt.plot(history.history['val_accuracy'])
-plt.title('Training and Validation Accuracy over Time')
-plt.ylabel('Accuracy')
-plt.xlabel('Number of training epochs')
-plt.legend(['Training set', 'Validation set'], loc='upper left')
-plt.show()
-#x_test = tf.stack(x_test, axis=0)
+
+#printing out our predictions that we get when we run the test images on our model
 print("Predictions:")
-aPredictionArr = model.predict(np.array(x_test))
-#np.set_printoptions(threshold=np.inf)
-print(aPredictionArr)
-#confusion_matrix = tf.math.confusion_matrix(labels=y_test, predictions= aPredictionArr).numpy()
+aPredictionArr = model.predict(np.array(x_test)) #gets a prediction for each image in the form of an array
+print(aPredictionArr) #prints these predictions out
+
+#confusion_matrix creation
 con_matrix = tf.math.confusion_matrix([np.argmax(t) for t in y_test], [np.argmax(p) for p in aPredictionArr])
+print("Confusion matrix:") #printing the
+print(con_matrix)
 
 #saving 3 images that are incorrect predictions
 count = 0
@@ -267,10 +229,17 @@ for y in range(len(aPredictionArr)):
             data.save('Wrong Prediction'+str(count)+'.png') #save image
     else:
         break
-print("total accuracy:")
+print("Total accuracy:")
 totalRight = 0
 for i in range(0, 10):
     totalRight += con_matrix[i][i]
 print(totalRight/1560)
-print("confusion matrix:")
-print(con_matrix)
+
+#plotting
+plt.plot(history.history['accuracy']) #training accuracy data
+plt.plot(history.history['val_accuracy']) #validation set data
+plt.title('Training and Validation Accuracy over Time') #plot title
+plt.ylabel('Accuracy') #y axis label
+plt.xlabel('Number of training epochs') #x axis label
+plt.legend(['Training set', 'Validation set'], loc='upper left') #adding a key for the two plots
+plt.show() #prints the plot
