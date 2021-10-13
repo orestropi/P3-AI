@@ -3,6 +3,7 @@ from keras.layers import Dense, Activation, Dropout
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras import initializers
+from PIL import Image as im
 from array import *
 #testing splitting data
 #our_array = np.array([4,5,6,7,8])
@@ -246,6 +247,20 @@ aPredictionArr = model.predict(np.array(x_test))
 print(aPredictionArr)
 #confusion_matrix = tf.math.confusion_matrix(labels=y_test, predictions= aPredictionArr).numpy()
 con_matrix = tf.math.confusion_matrix([np.argmax(t) for t in y_test], [np.argmax(p) for p in aPredictionArr])
+
+#saving 3 images that are incorrect predictions
+count = 0
+for y in range(len(aPredictionArr)):
+    if count < 3:
+        prediction_index = np.argmax(aPredictionArr[y]) #gets index of predicted value
+        actual_index = np.argmax(y_test[y]) #gets index of actual value
+        if prediction_index != actual_index: #checks if the index for the predicted values are the same
+            array = np.reshape(x_test[y], (28,28)) #reshape array to 28x28
+            data = im.fromarray(array) #create image
+            count = count + 1
+            data.save('Wrong Prediction'+str(count)+'.png') #save image
+    else:
+        break
 print("total accuracy:")
 totalRight = 0
 for i in range(0, 10):
