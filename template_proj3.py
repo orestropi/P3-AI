@@ -213,13 +213,14 @@ print(aPredictionArr) #prints these predictions out
 
 #confusion_matrix creation
 con_matrix = tf.math.confusion_matrix([np.argmax(t) for t in y_test], [np.argmax(p) for p in aPredictionArr])
-print("Confusion matrix:") #printing the
+print("Confusion matrix:") #printing the confusion matrix
 print(con_matrix)
 
 #saving 3 images that are incorrect predictions
 count = 0
+#go through the predictions
 for y in range(len(aPredictionArr)):
-    if count < 3:
+    if count < 3: #only get 3 images
         prediction_index = np.argmax(aPredictionArr[y]) #gets index of predicted value
         actual_index = np.argmax(y_test[y]) #gets index of actual value
         if prediction_index != actual_index: #checks if the index for the predicted values are the same
@@ -229,11 +230,13 @@ for y in range(len(aPredictionArr)):
             data.save('Wrong Prediction'+str(count)+'.png') #save image
     else:
         break
+
+#prints the accuracy of the entire model
 print("Total accuracy:")
 totalRight = 0
 for i in range(0, 10):
-    totalRight += con_matrix[i][i]
-print(totalRight/1560)
+    totalRight += con_matrix[i][i] #counts the number of predictions on the diagonal
+print(totalRight/1560) #total number of diagonal predicions divided by total number of images (gives a percent)
 
 #plotting
 plt.plot(history.history['accuracy']) #training accuracy data
